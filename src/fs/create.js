@@ -1,20 +1,17 @@
 import { writeFile } from "fs/promises";
-import { fileURLToPath } from "url";
-import { dirname, join } from "path";
-
-const __dirname = dirname(fileURLToPath(import.meta.url));
+import { FSFiledError } from "../utils/error.js";
+import { getPathByDirname } from "../utils/fs.js";
 
 const create = async () => {
   const EXIST_ERROR_CODE = "EEXIST";
   const content = "I am fresh and young";
-  const EXIST_ERROR_MESSAGE = "FS operation failed";
-  const newFilePath = join(__dirname, "files", "fresh.txt");
+  const newFilePath = getPathByDirname(import.meta.url, "files", "fresh.txt");
 
   try {
     await writeFile(newFilePath, content, { flag: "wx" });
   } catch (error) {
     if (error.code === EXIST_ERROR_CODE) {
-      throw new Error(EXIST_ERROR_MESSAGE);
+      throw new FSFiledError();
     } else {
       throw error;
     }
