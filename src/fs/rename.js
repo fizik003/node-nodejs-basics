@@ -1,6 +1,6 @@
 import * as fs from "fs/promises";
 import { getPathByDirname } from "../utils/fs.js";
-import { FSFiledError, throwNoSuchFileError } from "../utils/error.js";
+import { throwNoSuchFileError } from "../utils/error.js";
 
 const rename = async () => {
   const META_URL = import.meta.url;
