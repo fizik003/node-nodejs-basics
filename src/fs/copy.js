@@ -1,6 +1,6 @@
 import * as fs from "fs/promises";
 import { getPathByDirname } from "../utils/fs.js";
-import { FSFiledError } from "../utils/error.js";
+import { FSFiledError, throwNoSuchFileError } from "../utils/error.js";
 
 const copy = async () => {
   const META_URL = import.meta.url;
@@ -8,11 +8,6 @@ const copy = async () => {
   const DESTINATION_FOLDER_NAME = "files_copy";
   const srcFolderPath = getPathByDirname(META_URL, SOURCE_FOLDER_NAME);
   const destFolderPath = getPathByDirname(META_URL, DESTINATION_FOLDER_NAME);
-  try {
-    await fs.access(srcFolderPath);
-  } catch (error) {
-    throw new FSFiledError();
-  }
 
   try {
     await fs.access(destFolderPath);
@@ -26,6 +21,7 @@ const copy = async () => {
   try {
     fs.cp(srcFolderPath, destFolderPath, { recursive: true });
   } catch (error) {
+    throwNoSuchFileError(error);
     throw error;
   }
 };
