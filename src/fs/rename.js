@@ -1,6 +1,6 @@
 import * as fs from "fs/promises";
 import { getPathByDirname } from "../utils/fs.js";
-import { FSFiledError } from "../utils/error.js";
+import { FSFiledError, throwNoSuchFileError } from "../utils/error.js";
 
 const rename = async () => {
   const META_URL = import.meta.url;
@@ -9,9 +9,7 @@ const rename = async () => {
   try {
     await fs.rename(srcPath, destPath);
   } catch (error) {
-    if (error.code === "ENOENT") {
-      throw new FSFiledError();
-    }
+    throwNoSuchFileError(error);
     throw error;
   }
 };
